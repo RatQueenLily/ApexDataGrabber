@@ -46,7 +46,25 @@ namespace ApexDataGrabber
 
             }
 
-            // ReplyAsync is a method on ModuleBase 
+
+            [Command("love")]
+            [Summary("cringe")]
+            public async Task LoveAsync()
+            {
+                Random r = new Random();
+                int rInt = r.Next(0, 2);
+
+                switch (rInt)
+                {
+                    case 0:
+                        await Context.Channel.SendMessageAsync("i love my cute girlfriend sefa!!! she is the best and makes me feel so happy and loved <3");
+                        break;
+
+                        //create more cring here
+
+                }
+
+            }
         }
 
     }
