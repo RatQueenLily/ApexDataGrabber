@@ -7,7 +7,7 @@ using Newtonsoft.Json.Linq;
 
 namespace ApexDataGrabber
 {
-    class PlayerData
+    public class PlayerData
     {
 
         // general player data

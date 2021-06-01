@@ -18,14 +18,16 @@ namespace ApexDataGrabber
     class Program
     {
     
-        static HttpClient client = new HttpClient();
         static DiscordSocketClient _client;
         static CommandService _commands;
         static CommandHandler _commandHandler =  new CommandHandler(_client, _commands);
 
         static IServiceProvider _services;
 
-        static async void Setup ()
+        static APICaller _apiCaller;
+        static Modules _modules;
+
+        static void Setup()
         {
 
             _client = new DiscordSocketClient(new DiscordSocketConfig
@@ -61,7 +63,8 @@ namespace ApexDataGrabber
             // Setup your DI container.
             _services = ConfigureServices();
 
-            
+            //setup the api calling module
+            _modules = new Modules();
         }
 
         private static IServiceProvider ConfigureServices()
@@ -79,23 +82,23 @@ namespace ApexDataGrabber
 
 
 
-        // inputting a name, building a request, returning deserialised product
-        static async Task<PlayerData> GetPlayerStatsAsync(string playerName)
-        {
-            client.BaseAddress = new Uri("https://api.mozambiquehe.re/");
-            client.DefaultRequestHeaders.Accept.Clear();
+        //// inputting a name, building a request, returning deserialised product
+        //static async Task<PlayerData> GetPlayerStatsAsync(string playerName)
+        //{
+        //    client.BaseAddress = new Uri("https://api.mozambiquehe.re/");
+        //    client.DefaultRequestHeaders.Accept.Clear();
 
-            string authKey = "iaRXcyiPqDryd2bSZKCj";
+        //    string authKey = "iaRXcyiPqDryd2bSZKCj";
 
-            // send api request
-            var data = await client.GetStringAsync("bridge?version=5&platform=PC&player=" + playerName + "&auth=" + authKey);
-            //var deserializedProduct = JsonConvert.DeserializeObject(data);
+        //    // send api request
+        //    var data = await client.GetStringAsync("bridge?version=5&platform=PC&player=" + playerName + "&auth=" + authKey);
+        //    //var deserializedProduct = JsonConvert.DeserializeObject(data);
 
-            PlayerData playerData = new PlayerData(data);
+        //    PlayerData playerData = new PlayerData(data);
 
-            return playerData;
+        //    return playerData;
 
-        }
+        //}
 
    // Example of a logging handler. This can be re-used by addons
     // that ask for a Func<LogMessage, Task>.
@@ -163,36 +166,6 @@ namespace ApexDataGrabber
     
 
 
-    //static async Task RunApi()
-    //    {
-    //        client.BaseAddress = new Uri("https://api.mozambiquehe.re/");
-    //        client.DefaultRequestHeaders.Accept.Clear();
-
-
-    //        try
-    //        {
-
-    //            PlayerData data = await GetPlayerStatsAsync("RatQueenLily");
-                
-
-
-
-    //            Console.WriteLine(data);
-
-
-    //        }
-    //        catch (Exception e)
-    //        {
-    //            // error message here
-    //            Console.WriteLine(e.Message);
-    //        }
-
-    //        Console.ReadLine();
-    //    }
-
-
-
-
         private async Task InitCommands()
         {
             // Either search the program and add all Module classes that can be found.
@@ -239,26 +212,26 @@ namespace ApexDataGrabber
         }
 
 
-        public class InfoModule : ModuleBase<SocketCommandContext>
-        {
-            // ~say hello world -> hello world
-            [Command("lookup")]
-            [Summary("looks up a player's stats")]
-            public async Task LookupAsync([Remainder][Summary("The player to look up.")] string player)
-            {
-                PlayerData data = await GetPlayerStatsAsync(player);
+        //public class InfoModule : ModuleBase<SocketCommandContext>
+        //{
+        //    // ~say hello world -> hello world
+        //    [Command("lookup")]
+        //    [Summary("looks up a player's stats")]
+        //    public async Task LookupAsync([Remainder][Summary("The player to look up.")] string player)
+        //    {
+        //        PlayerData data = await GetPlayerStatsAsync(player);
 
-                await Context.Channel.SendMessageAsync("Player name: " + data.playerName);
-                await Context.Channel.SendMessageAsync("Level: " + data.level.ToString());
-                await Context.Channel.SendMessageAsync("Is Banned?: " + data.isBanned.ToString());
-                await Context.Channel.SendMessageAsync("Ranked Score " + data.rankScore.ToString());
-                await Context.Channel.SendMessageAsync("Rank:" + data.rankName + data.rankDivision);
-                await Context.Channel.SendMessageAsync(data.rankImg);
+        //        await Context.Channel.SendMessageAsync("Player name: " + data.playerName);
+        //        await Context.Channel.SendMessageAsync("Level: " + data.level.ToString());
+        //        await Context.Channel.SendMessageAsync("Is Banned?: " + data.isBanned.ToString());
+        //        await Context.Channel.SendMessageAsync("Ranked Score " + data.rankScore.ToString());
+        //        await Context.Channel.SendMessageAsync("Rank:" + data.rankName + data.rankDivision);
+        //        await Context.Channel.SendMessageAsync(data.rankImg);
 
-            }
+        //    }
 
-            // ReplyAsync is a method on ModuleBase 
-        }
+        //    // ReplyAsync is a method on ModuleBase 
+        //}
 
     }
 }

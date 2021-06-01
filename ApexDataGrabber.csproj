@@ -106,7 +106,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="APICaller.cs" />
     <Compile Include="CommandHandler.cs" />
+    <Compile Include="Modules.cs" />
     <Compile Include="PlayerData.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
